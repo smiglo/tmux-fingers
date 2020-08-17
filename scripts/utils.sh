@@ -118,12 +118,12 @@ function init_pane_cmd() {
 }
 
 function tmux_list_vi_copy_keys() {
-  output=$(tmux list-keys -t vi-copy 2> /dev/null)
-
-  if [[ -z $output ]]; then
-    output=$(tmux list-keys -Tcopy-mode-vi)
+  local output=
+  if [[ $(tmux show-options -wgv mode-keys) == 'vi' ]]; then
+    output=$(tmux list-keys -T copy-mode-vi 2>/dev/null)
+  else
+    output=$(tmux list-keys -T copy-mode 2>/dev/null)
   fi
-
   echo "$output"
 }
 
